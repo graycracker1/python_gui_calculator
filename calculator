@@ -1,0 +1,152 @@
+from tkinter import *
+from tkinter import ttk
+
+def button_click(number):
+    global result_displayed
+    if result_displayed:
+        textbox.delete(0, END)  
+        result_displayed = False
+    current = textbox.get()
+    textbox.delete(0, END)
+    textbox.insert(END, current + str(number))
+    
+result_displayed = False
+
+def button_equal():
+    global result_displayed
+    expression = textbox.get()
+    try:
+        result = eval(expression)
+        textbox.delete(0, END)
+        textbox.insert(END, str(result))
+        previous_results.append(expression + " = " + str(result))
+        update_previous_treeview()
+        result_displayed = True 
+    except:
+        textbox.delete(0, END)
+        textbox.insert(END, "Error")
+
+def button_ok():
+    global result_displayed
+    expression = textbox.get()
+    try:
+        result = eval(expression)
+        textbox.delete(0, END)
+        textbox.insert(END, str(result) )
+        previous_results.append(expression + " = " + str(result))
+        update_previous_treeview()
+        result_displayed = True 
+    except:
+        textbox.delete(0, END)
+        textbox.insert(END, "Error")
+
+def button_clear():
+    global result_displayed
+    textbox.delete(0, END)
+    result_displayed = False
+
+   
+
+
+def button_ac():
+    global previous_results
+    previous_results = []
+    update_previous_treeview()
+    textbox.delete(0, END)
+
+def button_open_bracket():
+    current = textbox.get()
+    textbox.delete(0, END)
+    textbox.insert(END, current + "(")
+
+def button_close_bracket():
+    current = textbox.get()
+    textbox.delete(0, END)
+    textbox.insert(END, current + ")")
+
+def update_previous_treeview():
+    previous_treeview.delete(*previous_treeview.get_children())
+    for result in previous_results:
+        previous_treeview.insert("", "end", values=(result,))
+
+root = Tk()
+root.title("Calculator")
+root.geometry("500x680")
+
+textbox = Entry(root, width=20)
+textbox.place(x=20, y=20, width=310, height=40)
+
+previous_results = []
+
+previous_treeview = ttk.Treeview(root, columns=("Results",), show="headings")
+previous_treeview.heading("Results", text="Previous Results")
+previous_treeview.place(x=20, y=80, width=310, height=200)
+
+previous_scrollbar = ttk.Scrollbar(root, orient="vertical", command=previous_treeview.yview)
+previous_scrollbar.place(x=330, y=80, height=200)
+previous_treeview.configure(yscrollcommand=previous_scrollbar.set)
+
+button_ac = Button(root, text="AC", padx=10, pady=10, command=button_ac, bg="red")
+button_ac.place(x=20, y=300, width=60, height=60)
+
+button_open_bracket = Button(root, text="(", padx=10, pady=10, command=button_open_bracket, bg="lightblue")
+button_open_bracket.place(x=90, y=300, width=60, height=60)
+
+button_clear = Button(root, text="C", padx=10, pady=10, command=button_clear, bg="orange")
+button_clear.place(x=230, y=300, width=60, height=60)
+
+button_close_bracket = Button(root, text=")", padx=10, pady=10, command=button_close_bracket, bg="lightblue")
+button_close_bracket.place(x=160, y=300, width=60, height=60)
+
+button_7 = Button(root, text="7", padx=10, pady=10, command=lambda: button_click(7), bg="lightgray")
+button_7.place(x=20, y=360, width=60, height=60)
+
+button_8 = Button(root, text="8", padx=10, pady=10, command=lambda: button_click(8), bg="lightgray")
+button_8.place(x=90, y=360, width=60, height=60)
+
+button_9 = Button(root, text="9", padx=10, pady=10, command=lambda: button_click(9), bg="lightgray")
+button_9.place(x=160, y=360, width=60, height=60)
+
+button_divide = Button(root, text="/", padx=10, pady=10, command=lambda: button_click('/'), bg="lightblue")
+button_divide.place(x=230, y=360, width=60, height=60)
+
+button_4 = Button(root, text="4", padx=10, pady=10, command=lambda: button_click(4), bg="lightgray")
+button_4.place(x=20, y=420, width=60, height=60)
+
+button_5 = Button(root, text="5", padx=10, pady=10, command=lambda: button_click(5), bg="lightgray")
+button_5.place(x=90, y=420, width=60, height=60)
+
+button_6 = Button(root, text="6", padx=10, pady=10, command=lambda: button_click(6), bg="lightgray")
+button_6.place(x=160, y=420, width=60, height=60)
+
+button_multiply = Button(root, text="*", padx=10, pady=10, command=lambda: button_click('*'), bg="lightblue")
+button_multiply.place(x=230, y=420, width=60, height=60)
+
+button_1 = Button(root, text="1", padx=10, pady=10, command=lambda: button_click(1), bg="lightgray")
+button_1.place(x=20, y=480, width=60, height=60)
+
+button_2 = Button(root, text="2", padx=10, pady=10, command=lambda: button_click(2), bg="lightgray")
+button_2.place(x=90, y=480, width=60, height=60)
+
+button_3 = Button(root, text="3", padx=10, pady=10, command=lambda: button_click(3), bg="lightgray")
+button_3.place(x=160, y=480, width=60, height=60)
+
+button_minus = Button(root, text="-", padx=10, pady=10, command=lambda: button_click('-'), bg="lightblue")
+button_minus.place(x=230, y=480, width=60, height=60)
+
+button_0 = Button(root, text="0", padx=10, pady=10, command=lambda: button_click(0), bg="lightgray")
+button_0.place(x=90, y=540, width=60, height=60)
+
+button_dot = Button(root, text=".", padx=10, pady=10, command=lambda: button_click('.'), bg="lightgray")
+button_dot.place(x=20, y=540, width=60, height=60)
+
+button_equal = Button(root, text="=", padx=10, pady=10, command=button_equal, bg="lightblue")
+button_equal.place(x=160, y=540, width=60, height=60)
+
+button_plus = Button(root, text="+", padx=10, pady=10, command=lambda: button_click('+'), bg="lightblue")
+button_plus.place(x=230, y=540, width=60, height=60)
+
+button_ok = Button(root, text="OK", padx=10, pady=10, command=button_ok, bg="green")
+button_ok.place(x=20, y=600, width=310, height=60)
+
+root.mainloop()
